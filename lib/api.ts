@@ -30,7 +30,8 @@ export async function createLostItem(data: {
     description: data.description ?? "",
     location: data.location.trim(),
     contact: data.contact.trim(),
-    date: data.date, // ISO string
+    date: new Date(data.date).toISOString(),
+    status: 0, // ✅ enum Pending
   };
 
   const res = await fetch(`${API_BASE}/api/lost`, {
@@ -47,6 +48,7 @@ export async function createLostItem(data: {
 
   return res.json();
 }
+
 
 
 
@@ -76,8 +78,10 @@ export async function createFoundItem(data: {
     category: data.category.trim(),
     location: data.location.trim(),
     contact: data.contact.trim(),
-    date: data.date,
+    date: new Date(data.date).toISOString(),
+    status: 0, // ✅ enum Pending
   };
+  
 
   const res = await fetch(`${API_BASE}/api/found`, {
     method: "POST",
@@ -93,6 +97,7 @@ export async function createFoundItem(data: {
 
   return res.json();
 }
+
 
 
 
