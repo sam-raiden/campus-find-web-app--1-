@@ -25,27 +25,29 @@ export async function createLostItem(data: {
   date: string;
 }) {
   const payload = {
-    itemName: data.itemName,
-    category: data.category,
+    itemName: data.itemName.trim(),
+    category: data.category.trim(),
     description: data.description ?? "",
+    location: data.location.trim(),
+    contact: data.contact.trim(),
+    date: data.date, // ISO string
   };
 
   const res = await fetch(`${API_BASE}/api/lost`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
   if (!res.ok) {
     const err = await res.text();
-    console.error("Lost item API error:", err);
+    console.error(err);
     throw new Error("Failed to create lost item");
   }
 
   return res.json();
 }
+
 
 
 // ---------- FOUND ITEMS ----------
@@ -70,26 +72,28 @@ export async function createFoundItem(data: {
   date: string;
 }) {
   const payload = {
-    itemName: data.itemName,
-    category: data.category,
+    itemName: data.itemName.trim(),
+    category: data.category.trim(),
+    location: data.location.trim(),
+    contact: data.contact.trim(),
+    date: data.date,
   };
 
   const res = await fetch(`${API_BASE}/api/found`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
   if (!res.ok) {
     const err = await res.text();
-    console.error("Found item API error:", err);
+    console.error(err);
     throw new Error("Failed to create found item");
   }
 
   return res.json();
 }
+
 
 
 // ---------- RESOLVE (🔥 FIXED) ----------
