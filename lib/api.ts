@@ -1,6 +1,4 @@
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE ||
-  "https://lost-found-production-8253.up.railway.app";
+const API_BASE ="";
 
 // ---------- LOST ITEMS ----------
 
