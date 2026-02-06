@@ -24,20 +24,29 @@ export async function createLostItem(data: {
   contact: string;
   date: string;
 }) {
+  const payload = {
+    itemName: data.itemName,
+    category: data.category,
+    description: data.description ?? "",
+  };
+
   const res = await fetch(`${API_BASE}/api/lost`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(payload),
   });
 
   if (!res.ok) {
+    const err = await res.text();
+    console.error("Lost item API error:", err);
     throw new Error("Failed to create lost item");
   }
 
   return res.json();
 }
+
 
 // ---------- FOUND ITEMS ----------
 
@@ -60,20 +69,28 @@ export async function createFoundItem(data: {
   contact: string;
   date: string;
 }) {
+  const payload = {
+    itemName: data.itemName,
+    category: data.category,
+  };
+
   const res = await fetch(`${API_BASE}/api/found`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(payload),
   });
 
   if (!res.ok) {
+    const err = await res.text();
+    console.error("Found item API error:", err);
     throw new Error("Failed to create found item");
   }
 
   return res.json();
 }
+
 
 // ---------- RESOLVE (🔥 FIXED) ----------
 
