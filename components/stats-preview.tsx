@@ -30,7 +30,7 @@ function AnimatedNumber({ value, duration = 1000 }: { value: number; duration?: 
     }
 
     requestAnimationFrame(animate)
-  }, [value, duration])
+  }, [value, duration, displayValue])
 
   return <span>{displayValue}</span>
 }
