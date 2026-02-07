@@ -62,14 +62,25 @@ export function FoundItemForm() {
     setIsSubmitting(true)
 
     try {
-      await createFoundItem(formData)
+      const payload = {
+        itemName: formData.itemName,
+        category: formData.category,
+        location: formData.location,
+        contact: formData.contact,
+        date: formData.date,
+      }
+
+      console.log("📤 Submitting Found Item:", payload)
+
+      await createFoundItem(payload)
 
       toast.success("Found item reported successfully!", {
-        description: "Thank you for helping reunite this item with its owner.",
+        description: "Your report has been submitted to the system.",
       })
 
       setFormData(initialFormData)
-    } catch {
+    } catch (error) {
+      console.error("❌ Submission error:", error)
       toast.error("Failed to submit report", {
         description: "Please try again later.",
       })
@@ -83,7 +94,7 @@ export function FoundItemForm() {
       <CardHeader>
         <CardTitle className="text-2xl">Report Found Item</CardTitle>
         <CardDescription>
-          Help reunite someone with their lost belongings
+          Fill out the form below to report an item you&apos;ve found on campus
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -92,7 +103,7 @@ export function FoundItemForm() {
             <Label htmlFor="itemName">Item Name</Label>
             <Input
               id="itemName"
-              placeholder="e.g., Student ID Card, Umbrella"
+              placeholder="e.g., Blue Backpack, iPhone 15"
               value={formData.itemName}
               onChange={(e) =>
                 setFormData({ ...formData, itemName: e.target.value })
@@ -123,10 +134,10 @@ export function FoundItemForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="location">Where Found</Label>
+            <Label htmlFor="location">Location Found</Label>
             <Input
               id="location"
-              placeholder="e.g., Cafeteria, Parking Lot B"
+              placeholder="e.g., Library 2nd Floor, Engineering Building"
               value={formData.location}
               onChange={(e) =>
                 setFormData({ ...formData, location: e.target.value })
@@ -136,10 +147,10 @@ export function FoundItemForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="contact">Your Contact Information</Label>
+            <Label htmlFor="contact">Contact Information</Label>
             <Input
               id="contact"
-              type="phonenumber"
+              type="tel"
               placeholder="Your Mobile Number"
               value={formData.contact}
               onChange={(e) =>
@@ -158,6 +169,7 @@ export function FoundItemForm() {
               onChange={(e) =>
                 setFormData({ ...formData, date: e.target.value })
               }
+              max={new Date().toISOString().split("T")[0]}
               required
             />
           </div>

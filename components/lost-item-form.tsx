@@ -65,14 +65,27 @@ export function LostItemForm() {
     setIsSubmitting(true)
 
     try {
-      await createLostItem(formData)
+      // Clean payload - ensure all fields are strings
+      const payload = {
+        itemName: formData.itemName,
+        category: formData.category,
+        description: formData.description,
+        location: formData.location,
+        contact: formData.contact,
+        date: formData.date,
+      }
+
+      console.log("📤 Submitting Lost Item:", payload)
+
+      await createLostItem(payload)
 
       toast.success("Lost item reported successfully!", {
         description: "Your report has been submitted to the system.",
       })
 
       setFormData(initialFormData)
-    } catch {
+    } catch (error) {
+      console.error("❌ Submission error:", error)
       toast.error("Failed to submit report", {
         description: "Please try again later.",
       })
@@ -155,8 +168,8 @@ export function LostItemForm() {
             <Label htmlFor="contact">Contact Information</Label>
             <Input
               id="contact"
-              type="phonenumber"
-              placeholder="Your Mobible Number"
+              type="tel"
+              placeholder="Your Mobile Number"
               value={formData.contact}
               onChange={(e) =>
                 setFormData({ ...formData, contact: e.target.value })
@@ -174,6 +187,7 @@ export function LostItemForm() {
               onChange={(e) =>
                 setFormData({ ...formData, date: e.target.value })
               }
+              max={new Date().toISOString().split("T")[0]}
               required
             />
           </div>
